@@ -29,28 +29,41 @@ function calculateHealthScore(bmi) {
 //  HypertensionRisk
 async function getHypertensionRisk(data) {
   try {
-    const response = await fetch(`${process.env.ML_API_URL || 'http://localhost:8000'}/predict/hypertension`, {
+    console.log("Calling ML (Hypertension):", process.env.ML_API_URL);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 60000); // 60 sec
+
+    const response = await fetch(`${process.env.ML_API_URL}/predict/hypertension`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeout);
 
     return await response.json();
   } catch (error) {
-    console.error("ML API Error:", error);
+    console.error("ML API Error:", error.message);
     return { risk: "Unknown", probability: 0 };
   }
 }
 
 async function getDiabetesRisk(data) {
   try {
-    const response = await fetch(`${process.env.ML_API_URL || 'http://localhost:8000'}/predict/diabetes`, {
+
+    console.log("Calling ML (Diabetes):", process.env.ML_API_URL);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 60000);
+
+    const response = await fetch(`${process.env.ML_API_URL}/predict/diabetes`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeout);
 
     if (!response.ok) {
       const text = await response.text();
@@ -60,7 +73,7 @@ async function getDiabetesRisk(data) {
 
     return await response.json();
   } catch (error) {
-    console.error("Diabetes ML API Error:", error);
+    console.error("Diabetes ML API Error:", error.message);
     return { risk: "Unknown", probability: 0 };
   }
 }
