@@ -48,7 +48,7 @@ db_model_path = os.path.join(BASE_DIR, "diabetes_model.pkl")
 
 # Download models
 if not os.path.exists(ht_model_path):
-    gdown.download("https://drive.google.com/uc?id=1WVIl21RykYXeWbKu5KqqKwajWYUBm8qR", ht_model_path, quiet=False)
+    gdown.download("https://drive.google.com/file/d/1IBEX1D-a8b9F4KT6saOY9Erq6K-DYcVO/view?usp=drive_link", ht_model_path, quiet=False)
 
 if not os.path.exists(db_model_path):
     gdown.download("https://drive.google.com/uc?id=19U-VjhMJxad08hsOaeekLV6DZGP6AI83", db_model_path, quiet=False)
