@@ -127,23 +127,24 @@ router.post("/analyze", async (req, res) => {
       });
     }
 
-    const { systolic, diastolic } = vitalsResult.rows[0];
+    const systolicNum = Number(vitalsResult.rows[0].systolic);
+    const diastolicNum = Number(vitalsResult.rows[0].diastolic);
 
     console.log("Fetched Vitals:", vitalsResult.rows[0]);
 
     console.log("Sending to ML:", {
       age: ageNum,
       bmi: bmi,
-      systolic,
-      diastolic,
+      systolic: systolicNum,
+      diastolic: diastolicNum,
     });
 
     // 🔥 Call ML with REAL BP
     const riskResult = await getHypertensionRisk({
       age: ageNum,
       bmi: bmi,
-      systolic: systolic,
-      diastolic: diastolic,
+      systolic: systolicNum,
+      diastolic: diastolicNum,
     });
 
     const result = await pool.query(
@@ -157,7 +158,7 @@ RETURNING *`,
         patient_id,
         height_cm,
         weight_kg,
-        age,
+        ageNum,
         bmi,
         category,
         healthScore,
