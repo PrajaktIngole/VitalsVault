@@ -53,18 +53,21 @@ if not os.path.exists(ht_model_path):
 if not os.path.exists(db_model_path):
     gdown.download("https://drive.google.com/uc?id=19U-VjhMJxad08hsOaeekLV6DZGP6AI83", db_model_path, quiet=False)
 
-# Load models
-hypertension_model = joblib.load(ht_model_path)
-diabetes_model = joblib.load(db_model_path)
+# # Load models
+# hypertension_model = joblib.load(ht_model_path)
+# diabetes_model = joblib.load(db_model_path)
 
 @app.post("/predict/hypertension")
 def predict_hypertension(data: dict):
+
+    model = joblib.load(ht_model_path)   # 🔥 load here
+
     features = np.array([[ 
         data["age"], data["bmi"], data["systolic"], data["diastolic"]
     ]])
 
-    prediction = hypertension_model.predict(features)[0]
-    probability = hypertension_model.predict_proba(features)[0][1]
+    prediction = model.predict(features)[0]
+    probability = model.predict_proba(features)[0][1]
 
     return {
         "risk": "High Risk" if prediction == 1 else "Low Risk",
@@ -73,6 +76,9 @@ def predict_hypertension(data: dict):
 
 @app.post("/predict/diabetes")
 def predict_diabetes(data: dict):
+
+    model = joblib.load(db_model_path)   # 🔥 load here
+
     pregnancies = 0
     glucose = data["sugar"]
     blood_pressure = 70
@@ -87,8 +93,8 @@ def predict_diabetes(data: dict):
         skin_thickness, insulin, bmi, dpf, age
     ]])
 
-    prediction = diabetes_model.predict(features)[0]
-    probability = diabetes_model.predict_proba(features)[0][1]
+    prediction = model.predict(features)[0]
+    probability = model.predict_proba(features)[0][1]
 
     return {
         "risk": "High Risk" if prediction == 1 else "Low Risk",
