@@ -33,12 +33,15 @@ async function getHypertensionRisk(data) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 60000); // 60 sec
 
-    const response = await fetch(`${process.env.ML_API_URL}/predict/hypertension`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-      signal: controller.signal,
-    });
+    const response = await fetch(
+      `${process.env.ML_API_URL}/predict/hypertension`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        signal: controller.signal,
+      },
+    );
 
     clearTimeout(timeout);
 
@@ -51,7 +54,6 @@ async function getHypertensionRisk(data) {
 
 async function getDiabetesRisk(data) {
   try {
-
     console.log("Calling ML (Diabetes):", process.env.ML_API_URL);
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 60000);
@@ -130,7 +132,7 @@ router.post("/analyze", async (req, res) => {
     console.log("Fetched Vitals:", vitalsResult.rows[0]);
 
     console.log("Sending to ML:", {
-      age: age,
+      age: ageNum,
       bmi: bmi,
       systolic,
       diastolic,
@@ -138,7 +140,7 @@ router.post("/analyze", async (req, res) => {
 
     // 🔥 Call ML with REAL BP
     const riskResult = await getHypertensionRisk({
-      age: age,
+      age: ageNum,
       bmi: bmi,
       systolic: systolic,
       diastolic: diastolic,
