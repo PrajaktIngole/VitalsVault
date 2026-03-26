@@ -45,6 +45,12 @@ async function getHypertensionRisk(data) {
 
     clearTimeout(timeout);
 
+    if (!response.ok) {
+      const text = await response.text();
+      console.error("Hypertension ML API error:", response.status, text);
+      return { risk: "Unknown", probability: 0 };
+    }
+
     return await response.json();
   } catch (error) {
     console.error("ML API Error:", error.message);
