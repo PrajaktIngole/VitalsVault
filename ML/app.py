@@ -57,8 +57,15 @@ if not os.path.exists(db_model_path):
 hypertension_model = joblib.load(ht_model_path)
 diabetes_model = joblib.load(db_model_path)
 
+hypertension_model = None
+
 @app.post("/predict/hypertension")
 def predict_hypertension(data: dict):
+    global hypertension_model
+
+    if hypertension_model is None:
+        print("Loading hypertension model...")
+        hypertension_model = joblib.load(ht_model_path)
 
     features = np.array([[ 
         data["age"], data["bmi"], data["systolic"], data["diastolic"]
@@ -72,6 +79,7 @@ def predict_hypertension(data: dict):
         "probability": round(float(probability) * 100, 2)
     }
 
+diabetes_model = None
 @app.post("/predict/diabetes")
 def predict_diabetes(data: dict):
 
