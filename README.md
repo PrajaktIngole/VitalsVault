@@ -32,7 +32,7 @@ Vitals Vault is a full-stack healthcare web application designed to securely man
 - Python (Scikit-learn, Pandas, NumPy)  
 
 **Database:**  
-- MongoDB  
+- Supabase - PostgreSQL  
 
 ---
 
