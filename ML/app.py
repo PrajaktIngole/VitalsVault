@@ -48,10 +48,10 @@ db_model_path = os.path.join(BASE_DIR, "diabetes_model.pkl")
 
 # Download models
 if not os.path.exists(ht_model_path):
-    gdown.download("https://drive.google.com/file/d/15OsLnsV1CqqNR9NY6GhgpNGe22GT1eEd/view?usp=drive_link", ht_model_path, quiet=False)
+    gdown.download("https://drive.google.com/file/d/1BSPdD8dfiw2rCJo5dG0MlwfLBRv9e549/view?usp=drive_link", ht_model_path, quiet=False)
 
 if not os.path.exists(db_model_path):
-    gdown.download("https://drive.google.com/file/d/1kwqg_UR4Ssgj3WaX9R0vZQtpA1aR39S8/view?usp=drive_link", db_model_path, quiet=False)
+    gdown.download("https://drive.google.com/file/d/1RMjOk3K6XwTE9lQD0wk8UpD-QREK9x3B/view?usp=drive_link", db_model_path, quiet=False)
 
 # # Load models
 # hypertension_model = joblib.load(ht_model_path)
