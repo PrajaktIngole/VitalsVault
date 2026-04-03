@@ -67,9 +67,14 @@ def predict_hypertension(data: dict):
         print("Loading hypertension model...")
         hypertension_model = joblib.load(ht_model_path)
 
+
+
     features = np.array([[ 
-        data["age"], data["bmi"], data["systolic"], data["diastolic"]
-    ]])
+    data["age"] * 365,   # 🔥 FIX AGE
+    data["bmi"],
+    data["systolic"],
+    data["diastolic"]
+]])
 
     prediction = hypertension_model.predict(features)[0]
     probability = hypertension_model.predict_proba(features)[0][1]
@@ -82,7 +87,8 @@ def predict_hypertension(data: dict):
 diabetes_model = None
 @app.post("/predict/diabetes")
 def predict_diabetes(data: dict):
-
+    global diabetes_model
+    
     pregnancies = 0
     glucose = data["sugar"]
     blood_pressure = 70
@@ -91,6 +97,10 @@ def predict_diabetes(data: dict):
     bmi = data["bmi"]
     dpf = 0.5 + (data.get("family_history", 0) * 0.3)
     age = data["age"]
+
+    if diabetes_model is None:
+        print("Loading diabetes model...")
+        diabetes_model = joblib.load(db_model_path)
 
     features = np.array([[ 
         pregnancies, glucose, blood_pressure,
